@@ -16,7 +16,7 @@ class Authorization
     {
         $CI = &get_instance();
         $key = $CI->config->item('jwt_key');
-        $algorithm = $CI->config->itm('algorithm');
+        $algorithm = $CI->config->item('jwt_algorithm');
         return JWT::decode($token, $key, array($algorithm));
     }
 
