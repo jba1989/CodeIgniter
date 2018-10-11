@@ -23,10 +23,6 @@ class Migration_Add_user extends CI_Migration {
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ),
-            'UserEmail' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-            ),
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('user');

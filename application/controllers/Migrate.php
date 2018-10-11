@@ -8,7 +8,7 @@
 
 class Migrate extends CI_Controller
 {
-    public function index()
+    public function up()
     {
         $this->load->library('migration');
 
@@ -16,5 +16,11 @@ class Migrate extends CI_Controller
         {
             show_error($this->migration->error_string());
         }
+    }
+
+    public function drop()
+    {
+        $this->load->library('migration');
+        $this->dbforge->drop_table('user');
     }
 }
