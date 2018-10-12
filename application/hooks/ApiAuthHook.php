@@ -6,14 +6,14 @@
  * Time: 下午 9:55
  */
 
+
+
 class ApiAuthHook
 {
-    // CI instance
     private $CI;
     private $route;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->CI = &get_instance();
         $this->route = '/^api/i';
     }
@@ -26,9 +26,13 @@ class ApiAuthHook
             $header = $this->CI->input->request_headers();
 
             if (array_key_exists('token', $header)) {
-                $token = Authorization::validateToken($header['token']);
+                $check = AuthToken::checkSessionToken($header['token']);
+
+                if ($check == FALSE) {
+                    show_error('Need correct authorization token');
+                }
             } else {
-                show_error('thie request lacks the authorization token');
+                show_error('this request lacks the authorization token');
             }
         }
     }

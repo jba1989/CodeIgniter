@@ -16,6 +16,10 @@ class User extends CI_Controller
 
     public function login()
     {
+        if (isset($_SESSION['token'])) {
+            redirect('/');
+        }
+
         $request = $this->input->post();
 
         if ($request != null) {
@@ -23,7 +27,7 @@ class User extends CI_Controller
             if ($result == null) {
                 echo 'No this account';
             } else if ($result->userPassword == md5($request['userPassword'])) {
-                $token = Authorization::generateToken(array($result->id, $result->userName));
+                $token = AuthToken::generateToken(array($result->id, $result->userName));
                 $this->session->set_tempdata('token', $token, 600);
                 echo $token;
 
@@ -38,6 +42,10 @@ class User extends CI_Controller
 
     public function register()
     {
+        if (isset($_SESSION['token'])) {
+            redirect('/');
+        }
+
         $request = $this->input->post();
 
         if ($request != null) {
@@ -45,7 +53,7 @@ class User extends CI_Controller
 
             if ($result == null) {
                 $id = $this->user_model->insert($request['userName'], md5($request['userPassword']));
-                $token = Authorization::generateToken(array($id, $request['userName']));
+                $token = AuthToken::generateToken(array($id, $request['userName']));
                 $this->session->set_tempdata('token', $token, 600);
                 echo $token;
 
@@ -62,5 +70,6 @@ class User extends CI_Controller
     public function logout()
     {
         $this->session->sess_destroy();
+        redirect('/user/login');
     }
 }
