@@ -24,6 +24,7 @@ class User extends CI_Controller
                 echo 'No this account';
             } else if ($result->userPassword == md5($request['userPassword'])) {
                 $token = Authorization::generateToken(array($result->id, $result->userName));
+                $this->session->set_tempdata('token', $token, 600);
                 echo $token;
 
                 return $token;
@@ -45,7 +46,9 @@ class User extends CI_Controller
             if ($result == null) {
                 $id = $this->user_model->insert($request['userName'], md5($request['userPassword']));
                 $token = Authorization::generateToken(array($id, $request['userName']));
+                $this->session->set_tempdata('token', $token, 600);
                 echo $token;
+
                 return $token;
             } else {
                 echo 'This account is already exist';
@@ -55,4 +58,9 @@ class User extends CI_Controller
 
     }
 
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
+    }
 }
