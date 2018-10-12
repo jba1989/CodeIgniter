@@ -8,24 +8,27 @@
 
 class User extends CI_Controller
 {
-
-    public function userInfo($userName)
+    public function __construct()
     {
-        $this->db->query("SELECT * FROM `user` WHERE `userName` = $userName");
+        parent::__construct();
+        $this->load->model('user_model', '', TRUE);
     }
 
     public function login()
     {
         $request = $this->input->post();
+
         if ($request != null) {
-            $this->load->database();
-            $query = 'SELECT * FROM `user` WHERE `userName` = ? AND `userPassword` = ?';
-            $result = $this->db->query($query, array($request['userName'], md5($request['userPassword'])));
-            if (count($result) > 0) {
-                $token = Authorization::generateToken($result);
-                echo $token;
-            } else {
+            $result = $this->user_model->getUser($request['userName']);
+            if ($result == null) {
                 echo 'No this account';
+            } else if ($result->userPassword == md5($request['userPassword'])) {
+                $token = Authorization::generateToken(array($result->id, $result->userName));
+                echo $token;
+
+                return $token;
+            } else {
+                echo 'Wrong password';
             }
         } else {
             $this->load->view('user/login');
@@ -34,21 +37,15 @@ class User extends CI_Controller
 
     public function register()
     {
-//        $this->load->database();
-//        $this->db->query("SELECT * FROM `user` WHERE `userName` = $userName");
-
         $request = $this->input->post();
-        if ($request != null) {
-            $this->load->database();
-            $query = 'SELECT * FROM `user` WHERE `userName` = ? AND `userPassword` = ?';
-            $result = $this->db->query($query, array($request['userName'], md5($request['userPassword'])));
 
-            if (count($result) > 0) {
-                $query = 'INSERT `user` (`userName`, `userPassword`) VALUES (?, ?)';
-                $this->db->query($query, array($request['userName'], md5($request['userPassword'])));
-                $this->load->view('user/register');
-                $token = Authorization::generateToken($result);
-                echo 'Success';
+        if ($request != null) {
+            $result = $this->user_model->getUser($request['userName']);
+
+            if ($result == null) {
+                $id = $this->user_model->insert($request['userName'], md5($request['userPassword']));
+                $token = Authorization::generateToken(array($id, $request['userName']));
+                echo $token;
                 return $token;
             } else {
                 echo 'This account is already exist';
