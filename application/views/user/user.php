@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <tr>
                 <td colspan="3">
                     <input type="reset" class="button" name="reset" value="清空"/>
-                    <input type="submit" class="button" name="{title}" value="確認"/>
+                    <input type="submit" class="button" name="submit" value="確認"/>
                 </td>
             </tr>
     </table>
