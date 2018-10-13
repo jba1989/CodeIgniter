@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <th>降雨機率</th>
             <th>溫度</th>
         </tr>
-        <?php foreach ($data as $num => $location) :?>
+        <?php foreach ($data as $num => $location): ?>
             <tr class="type<?php echo ($num % 2);?>">
                 <td rowspan="3"><?php echo $location['locationName']; ?></td>
                 <td><?php echo $location['weatherElement'][0]['time'][0]['startTime'] . '~' . $location['weatherElement'][0]['time'][0]['endTime']; ?></td>
@@ -66,6 +66,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <td><?php echo $location['weatherElement'][1]['time'][2]['parameter']['parameterName'] . '%'; ?></td>
                 <td><?php echo $location['weatherElement'][2]['time'][2]['parameter']['parameterName'] . '度'; ?></td>
             </tr>
-        <?php endforeach ?>
+        <?php endforeach; ?>
     </table>
 <body>

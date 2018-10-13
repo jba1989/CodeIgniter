@@ -8,14 +8,15 @@
 
 class Migrate extends CI_Controller
 {
-    public function up()
+    public function index()
     {
         $this->load->library('migration');
-
         if ($this->migration->current() === FALSE)
         {
             show_error($this->migration->error_string());
         }
+
+        $this->db->insert('user', array('userName' => 'test', 'userPassword' => md5('test')));
     }
 
     public function drop()

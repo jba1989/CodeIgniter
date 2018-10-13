@@ -90,8 +90,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="body">
 		<h3>請選擇功能</h3>
         <a href="/index.php/api/weather" class="button">查詢氣象</a>
-        <a href="/index.php/user/login" class="button">登入</a>
-        <a href="/index.php/user/register" class="button">註冊</a>
+        <?php if (!isset($_SESSION['login']) || $_SESSION['login'] !== TRUE): ?>
+            <a href="/index.php/user/login" class="button">登入</a>
+            <a href="/index.php/user/register" class="button">註冊</a>
+        <?php else: ?>
+            <a href="/index.php/user/logout" class="button">登出</a>
+        <?php endif; ?>
+
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
