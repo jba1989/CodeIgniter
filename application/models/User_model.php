@@ -25,6 +25,10 @@ class User_model  extends CI_Model
     public function insert($userName, $userPassword)
     {
         $result = $this->db->insert('user', array('userName' => $userName, 'userPassword' => $userPassword));
+        if ($result == 0) {
+            log_message('error', "userName:$userName could not insert into database");
+        }
+
         $id =  $this->db->insert_id();
 
         return $id;

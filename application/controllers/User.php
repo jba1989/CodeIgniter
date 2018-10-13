@@ -14,7 +14,6 @@ class User extends CI_Controller
         $this->load->model('user_model', '', TRUE);
         $this->load->library('form_validation');
         $this->load->helper('form');
-        $this->load->library('parser');
     }
 
     public function login()
@@ -48,12 +47,20 @@ class User extends CI_Controller
             if ($result == null) {
                 echo '查無此帳號';
             } else if ($result->userPassword == md5($request['userPassword'])) {
+
+                // 產生token
                 $token = AuthToken::generateToken(array($result->id, $result->userName));
+
+                // session寫入登入資料
                 $this->session->set_tempdata('token', $token, 600);
+                $this->session->set_tempdata('login', TRUE, 600);
+
+                // 回傳資料
                 $response = json_encode(array(
                     'status' => 'success',
                     'token' => $token
                 ));
+                echo $response;
                 return $response;
             } else {
                 echo '密碼錯誤';
@@ -90,16 +97,26 @@ class User extends CI_Controller
             $result = $this->user_model->getUser($request['userName']);
 
             if ($result == null) {
+
+                //寫入資料庫
                 $id = $this->user_model->insert($request['userName'], md5($request['userPassword']));
+
+                // 產生token
                 $token = AuthToken::generateToken(array($id, $request['userName']));
+
+                // session寫入登入資料
                 $this->session->set_tempdata('token', $token, 600);
+                $this->session->set_tempdata('login', TRUE, 600);
+
+                // 回傳資料
                 $response = json_encode(array(
                     'status' => 'success',
                     'token' => $token
                 ));
+                echo $response;
                 return $response;
             } else {
-                echo '帳號 已被使用';
+                echo '帳號已被使用';
             }
         }
         $this->parser->parse('user/user', array('title' => '註冊'));

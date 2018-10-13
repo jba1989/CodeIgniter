@@ -6,8 +6,6 @@
  * Time: 下午 9:55
  */
 
-
-
 class ApiAuthHook
 {
     private $CI;

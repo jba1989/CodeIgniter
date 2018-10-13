@@ -32,7 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </style>
 </head>
 <body>
-
 <form id="login" method="post" action="">
     <table>
         <caption>{title}</caption>
@@ -48,8 +47,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </tr>
             <tr>
                 <td colspan="3">
-                    <input type="reset" class="button" name="reset"/>
-                    <input type="submit" class="button" name="login"/>
+                    <input type="reset" class="button" name="reset" value="清空"/>
+                    <input type="submit" class="button" name="{title}" value="確認"/>
                 </td>
             </tr>
     </table>

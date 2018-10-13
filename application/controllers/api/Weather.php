@@ -22,6 +22,11 @@ class weather extends CI_Controller
 
         curl_close($ch);
 
+        if ($result == null) {
+            log_message('error', 'curl weather return null.');
+            show_error('無法讀取氣象局資料,請稍後再試');
+        }
+
         $resultArr = json_decode($result, TRUE);
         $this->load->view('weather/weather', array('data' => $resultArr['records']['location']));
     }
