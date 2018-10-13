@@ -29,10 +29,10 @@ class ApiAuthHook
                 $check = AuthToken::checkSessionToken($header['token']);
 
                 if ($check == FALSE) {
-                    show_error('Need correct authorization token');
+                    show_error('請取得正確的token');
                 }
             } else {
-                show_error('this request lacks the authorization token');
+                show_error('請先進行登入');
             }
         }
     }
